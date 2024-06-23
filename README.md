@@ -1,20 +1,15 @@
 # Aplikasi Inventory Gudang
 
-User Interface Login
-.
-.
+
+<h1 align="left">User Interface Login :</h1>
 <img align="justify" alt="Web-developer" width="50%" src="https://github.com/fadlyfebros/InventoryGudang/blob/main/Login.png">
 
 
-User Interface Menu Utama
-.
-.
+<h1 align="left">User Interface Menu Utama :</h1>
 <img align="justify" alt="Web-developer" width="50%" src="https://github.com/fadlyfebros/InventoryGudang/blob/main/menuUtama.png">
 
 
-User Interface Menu Laporan Barang
-.
-.
+<h1 align="left">User Interface Menu Laporan Barang :</h1>
 <img align="justify" alt="Web-developer" width="50%" src="https://github.com/fadlyfebros/InventoryGudang/blob/main/Report%20Barang.png">
 
 **Deskripsi Singkat:**

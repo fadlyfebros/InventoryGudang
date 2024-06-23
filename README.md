@@ -1,8 +1,6 @@
 # Aplikasi Inventory Gudang
 
 User Interface Login
-
-User Interface Login
 <img align="justify" alt="Web-developer" width="50%" src="https://github.com/fadlyfebros/InventoryGudang/blob/main/Login.png">
 
 

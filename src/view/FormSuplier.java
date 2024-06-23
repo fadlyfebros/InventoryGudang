@@ -554,8 +554,14 @@ public class FormSuplier extends javax.swing.JPanel implements SupplierPanel {
         String email = txtEmail.getText();
 
         // Input validation
-        if (namaSuplier.isEmpty() || alamatSuplier.isEmpty() || noTelp.isEmpty() || email.isEmpty() || !email.contains("@")) {
+        if (namaSuplier.isEmpty() || alamatSuplier.isEmpty() || noTelp.isEmpty() || email.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Mohon lengkapi semua data dengan benar", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Email validation
+        if (!email.contains("@")) {
+            JOptionPane.showMessageDialog(this, "Mohon masukkan email yang valid (harus mengandung '@')", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 

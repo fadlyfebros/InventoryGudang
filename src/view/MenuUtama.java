@@ -31,14 +31,21 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javazoom.jl.player.Player;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.advanced.AdvancedPlayer;
+import javazoom.jl.player.advanced.PlaybackEvent;
+import javazoom.jl.player.advanced.PlaybackListener;
 /**
  *
  * @author GILANG RUBIYANA
@@ -47,12 +54,9 @@ public class MenuUtama extends javax.swing.JFrame {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/project_inventory";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "";
-    private JButton playButton;
-    private JButton stopButton;
-
-    private Thread audioThread;
-    private Player playMP3;
-    private boolean isPlaying = false;
+    private float volume = 0.1f; // Volume dalam rentang 0.0 (mute) hingga 1.0 (full volume)
+    private String audioFilePath = "D:/Febro/Website/Project Netbeans/Project Inventory/Project Inventory/src/audio/lofi.mp3";
+    
     /**
      * Creates new form Menu_Utama
      */
@@ -61,69 +65,62 @@ public class MenuUtama extends javax.swing.JFrame {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         Dimension panelSize = new Dimension(250, 100);
         showDashboard();
+        playAudio();
         excute();
-        addAudioControlButtons();
     }
-    private void addAudioControlButtons() {
-        // Membuat panel untuk menempatkan tombol
-        JPanel audioControlPanel = new JPanel();
+    /**
+    * Memainkan file audio dalam loop. Metode ini berjalan dalam thread terpisah
+    * untuk memastikan GUI tetap responsif saat audio diputar.
+    * Jika pemutaran selesai, audio akan diputar ulang.
+    */
+   private void playAudio() {
+       new Thread(() -> {
+           while (true) { // Loop untuk memutar ulang audio
+               try {
+                   FileInputStream fis = new FileInputStream(audioFilePath);
+                   AdvancedPlayer player = new AdvancedPlayer(fis);
 
-        // Membuat tombol Play
-        playButton = new JButton("Play");
-        playButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                playAudio();
-            }
-        });
+                   player.setPlayBackListener(new PlaybackListener() {
+                       @Override
+                       public void playbackFinished(PlaybackEvent evt) {
+                           System.out.println("Playback selesai, memulai ulang...");
+                       }
+                   });
 
-        // Membuat tombol Stop
-        stopButton = new JButton("Stop");
-        stopButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                stopAudio();
-            }
-        });
-        
+                   player.play();
+               } catch (JavaLayerException | IOException e) {
+                   e.printStackTrace();
+               }
+           }
+       }).start();
+   }
 
-        // Menambahkan tombol ke panel
-        audioControlPanel.add(playButton);
-        audioControlPanel.add(stopButton);
+   /**
+    * Menyesuaikan volume file audio yang ditentukan dengan faktor pengurangan
+    * yang diberikan dan memutar audio yang sudah disesuaikan. Metode ini tidak
+    * memutar audio dalam loop.
+    *
+    * @param audioFilePath Jalur ke file audio yang akan diputar.
+    * @param volumeReductionFactor Faktor pengurangan volume.
+    * @throws IOException Jika terjadi kesalahan I/O.
+    * @throws LineUnavailableException Jika jalur audio tidak tersedia.
+    * @throws UnsupportedAudioFileException Jika format file audio tidak didukung.
+    */
+   private void adjustVolume(String audioFilePath, float volumeReductionFactor) 
+           throws IOException, LineUnavailableException, UnsupportedAudioFileException {
+       AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(audioFilePath));
+       AudioFormat format = audioInputStream.getFormat();
 
-        // Menambahkan panel kontrol audio ke panel utama atau panel yang sesuai
-        panel_dasar.add(audioControlPanel);
-        panel_dasar.revalidate();
-        panel_dasar.repaint();
-    }
-    private void playAudio() {
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    // Cetak direktori kerja saat ini
-                    System.out.println("Working Directory = " + System.getProperty("user.dir"));
-                    
-                    // Path absolut untuk memastikan file ditemukan
-                    String absolutePath = "D:/Febro/Website/Project Netbeans/Project Inventory/Project Inventory/src/audio/lofi.mp3";
-                    FileInputStream fis = new FileInputStream(absolutePath);
-                    
-                    // Path relatif (gunakan jika path absolut bekerja)
-                    // FileInputStream fis = new FileInputStream("./src/audio/lofi.mp3");
-                    
-                    Player playMP3 = new Player(fis);
-                    playMP3.play();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-    private void stopAudio() {
-        isPlaying = false;
-        if (playMP3 != null) {
-            playMP3.close();
-        }
-    }
+       DataLine.Info info = new DataLine.Info(Clip.class, format);
+       Clip audioClip = (Clip) AudioSystem.getLine(info);
+       audioClip.open(audioInputStream);
+
+       FloatControl volumeControl = (FloatControl) audioClip.getControl(FloatControl.Type.MASTER_GAIN);
+       float volume = volumeControl.getValue();
+       volumeControl.setValue(volume * volumeReductionFactor);
+
+       audioClip.start();
+   }
     public void showDashboard() {
         panel_utama.removeAll(); // Menghapus semua komponen dari panel utama
         panel_utama.add(new content_bg()); // Menambahkan panel dashboard
@@ -278,7 +275,7 @@ public class MenuUtama extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MenuUtama().setVisible(true);
+                java.awt.EventQueue.invokeLater(() -> new MenuUtama().setVisible(true));
             }
         });
     }

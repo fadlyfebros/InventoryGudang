@@ -82,17 +82,35 @@ public class FormBarang extends javax.swing.JPanel {
             }
         });
     }
-    // Menerapkan overloading
+    // Overloading updateHargaJual untuk menghitung harga jual dengan markup yang berbeda
     private void updateHargaJual() {
         try {
             double hargaBeli = Double.parseDouble(txtHargaBeli.getText());
-            double hargaJual = hargaBeli + (hargaBeli * 0.20);
+            double hargaJual = hitungHargaJual(hargaBeli, 0.20); // Default markup 20%
             DecimalFormat df = new DecimalFormat("#");
             txtHargaJual.setText(df.format(hargaJual));
         } catch (NumberFormatException e) {
             txtHargaJual.setText("");
         }
     }
+
+    // Overloading updateHargaJual dengan parameter tambahan markup
+    private void updateHargaJual(double markup) {
+        try {
+            double hargaBeli = Double.parseDouble(txtHargaBeli.getText());
+            double hargaJual = hitungHargaJual(hargaBeli, markup);
+            DecimalFormat df = new DecimalFormat("#");
+            txtHargaJual.setText(df.format(hargaJual));
+        } catch (NumberFormatException e) {
+            txtHargaJual.setText("");
+        }
+    }
+
+    // Metode untuk menghitung harga jual berdasarkan harga beli dan markup
+    private double hitungHargaJual(double hargaBeli, double markup) {
+        return hargaBeli * (1 + markup);
+    }
+
 
     private void searchItem() {
         String searchText = txtSearch.getText();

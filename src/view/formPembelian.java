@@ -37,6 +37,7 @@ public class formPembelian extends javax.swing.JPanel {
         tblpembelian = new JTable();
         
         initComponents();
+        initSearchField();
         loadData();
         loadPoNo();
         setTanggalOtomatis();
@@ -135,26 +136,26 @@ public class formPembelian extends javax.swing.JPanel {
     }
 
     private void search(String keyword) {
-        DefaultTableModel model = new DefaultTableModel(new String[]{"Stok In", "PO No", "Line", "Kode Supplier", "Nama Supplier", "Kode Barang", "Nama Barang", "Due Date", "Qty", "Rec"}, 0);
+        DefaultTableModel model = new DefaultTableModel(new String[]{"PO_No", "Kode_Supplier", "Nama_Supplier", "Kode_Barang", "Nama_Barang", "Due_Date_Order", "Qty_Order", "Due Date Receive", "Qty Receive", "Total_Stock"}, 0);
         try (Connection c = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-             PreparedStatement p = c.prepareStatement("SELECT * FROM tb_pembelian WHERE `Stok_In` LIKE ? OR `PO_No` LIKE ? OR `Line` LIKE ? OR `Kode_Supplier` LIKE ? OR `Nama_Supplier` LIKE ? OR `Kode_Barang` LIKE ? OR `Nama_Barang` LIKE ? OR `Due_Date` LIKE ? OR `Qty` LIKE ? OR `Rec` LIKE ?")) {
+             PreparedStatement p = c.prepareStatement("SELECT * FROM tb_pembelian WHERE `PO_No` LIKE ? OR `Kode_Supplier` LIKE ? OR `Nama_Supplier` LIKE ? OR `Kode_Barang` LIKE ? OR `Nama_Barang` LIKE ?")) {
             String query = "%" + keyword + "%";
-            for (int i = 1; i <= 10; i++) {
+            for (int i = 1; i <= 5; i++) {
                 p.setString(i, query);
             }
             try (ResultSet r = p.executeQuery()) {
                 while (r.next()) {
                     model.addRow(new Object[]{
-                            r.getInt("Stok_In"),
                             r.getString("PO_No"),
-                            r.getInt("Line"),
                             r.getString("Kode_Supplier"),
                             r.getString("Nama_Supplier"),
                             r.getString("Kode_Barang"),
                             r.getString("Nama_Barang"),
-                            r.getDate("Due_Date"),
-                            r.getInt("Qty"),
-                            r.getString("Rec")
+                            r.getDate("Due_Date_Order"),
+                            r.getString("Qty_Order"),
+                            r.getDate("Due Date Receive"),
+                            r.getString("Qty Receive"),
+                            r.getInt("Total_Stock")
                     });
                 }
                 tblpembelian.setModel(model);

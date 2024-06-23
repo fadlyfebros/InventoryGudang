@@ -173,7 +173,7 @@ public class Register extends javax.swing.JFrame {
         BtnLogin.setBackground(new java.awt.Color(0, 102, 102));
         BtnLogin.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         BtnLogin.setForeground(new java.awt.Color(255, 255, 255));
-        BtnLogin.setText("Login");
+        BtnLogin.setText("Register");
         BtnLogin.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         BtnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -227,7 +227,7 @@ public class Register extends javax.swing.JFrame {
                         .addGap(59, 59, 59)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(BtnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(BtnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(BtnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jConPasswordField, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
@@ -302,42 +302,43 @@ public class Register extends javax.swing.JFrame {
         String conPassword = jConPasswordField.getText().toString().trim();
         String tipeLogin = comboTipeUser.getSelectedItem().toString(); // Ambil tipe user dari JComboBox
 
-        // Memeriksa apakah username, password, confirmPassword, atau tipe user kosong
-        if (username.isEmpty() || password.isEmpty() || conPassword.isEmpty() || tipeLogin.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Username, password, or user type cannot be empty");
+        // Validasi input pengguna
+        if (username.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Masukkan Username Terlebih Dahulu");
+        } else if (tipeLogin.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Pilih Tipe Login Terlebih Dahulu");
+        } else if (password.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Masukkan Password Terlebih Dahulu");
+        } else if (!password.equals(conPassword)) {
+            JOptionPane.showMessageDialog(null, "Kata sandi yang Anda Masukkan tidak cocok");
         } else {
-            // Memeriksa apakah password cocok dengan confirmPassword
-            if (!password.equals(conPassword)) {
-                JOptionPane.showMessageDialog(null, "Password does not match");
-            } else {
-                try {
-                    // Membuat koneksi ke database
-                    Connection c = Koneksi.getKoneksi();
+            try {
+                // Membuat koneksi ke database
+                Connection c = Koneksi.getKoneksi();
 
-                    // Membuat query untuk memasukkan data pengguna baru
-                    String sql = "INSERT INTO login (id, username, password, tipeLogin) VALUES (?, ?, ?, ?)";
+                // Membuat query untuk memasukkan data pengguna baru
+                String sql = "INSERT INTO login (id, username, password, tipeLogin) VALUES (?, ?, ?, ?)";
 
-                    // Mempersiapkan statement SQL
-                    PreparedStatement p = c.prepareStatement(sql);
-                    p.setString(1, id);
-                    p.setString(2, username);
-                    p.setString(3, password);
-                    p.setString(4, tipeLogin);
+                // Mempersiapkan statement SQL
+                PreparedStatement p = c.prepareStatement(sql);
+                p.setString(1, id);
+                p.setString(2, username);
+                p.setString(3, password);
+                p.setString(4, tipeLogin);
 
-                    // Melakukan eksekusi query untuk memasukkan data pengguna baru ke database
-                    p.executeUpdate();
+                // Melakukan eksekusi query untuk memasukkan data pengguna baru ke database
+                p.executeUpdate();
 
-                    // Menampilkan pesan sukses jika operasi berhasil
-                    JOptionPane.showMessageDialog(null, "Account Created Successfully");
-                } catch (SQLException e) {
-                    // Menampilkan pesan kesalahan jika terjadi kesalahan saat memasukkan data ke database
-                    JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                } finally {
-                    // Menutup jendela pendaftaran dan membuka jendela login
-                    this.dispose();
-                    Login a = new Login();
-                    a.setVisible(true);
-                }
+                // Menampilkan pesan sukses jika operasi berhasil
+                JOptionPane.showMessageDialog(null, "Account Created Successfully");
+            } catch (SQLException e) {
+                // Menampilkan pesan kesalahan jika terjadi kesalahan saat memasukkan data ke database
+                JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } finally {
+                // Menutup jendela pendaftaran dan membuka jendela login
+                this.dispose();
+                Login a = new Login();
+                a.setVisible(true);
             }
         }
     }//GEN-LAST:event_BtnLoginActionPerformed

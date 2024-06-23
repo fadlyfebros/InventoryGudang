@@ -1,3 +1,4 @@
+// Menerapkan konsep class, constructor, dan method
 package koneksi;
 
 public class Supplier {

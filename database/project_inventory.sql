@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 20 Jun 2024 pada 19.02
+-- Waktu pembuatan: 23 Jun 2024 pada 02.58
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -45,7 +45,9 @@ INSERT INTO `login` (`id`, `username`, `password`, `tipeLogin`) VALUES
 ('AD004', 'Fadly', '123456778', 'Purchasing'),
 ('AD005', 'Xaviant', 'bayarwoi', 'Purchasing'),
 ('AD006', 'Gilang', '12345678', 'Admin'),
-('AD007', 'fadly', 'admin', 'Admin');
+('AD007', 'fadly', 'admin', 'Admin'),
+('AD008', 'Gilang', '12345678', 'Admin'),
+('AD009', 'Fadly', 'q1w2e3r4t5', 'Admin');
 
 -- --------------------------------------------------------
 
@@ -71,7 +73,9 @@ CREATE TABLE `tb_barang` (
 
 INSERT INTO `tb_barang` (`kodeBarang`, `namaBarang`, `berat`, `kodeSupplier`, `namaSupplier`, `StokAwal`, `Satuan`, `hargaBeli`, `hargaJual`) VALUES
 ('B-000000001', 'Wafer Tango', '21 Gram', 'SP-0000001', 'PT. MAYORA INDAH TBK.', 100, 'Pcs', '1000.0', '1200.0'),
-('B-000000002', 'DIAMOND MILK FRESH LOW ', '946ml', 'SP-0000004', 'PT Diamond Food Indonesia Tbk ', 100, 'Pcs', '25000.0', '30000.0');
+('B-000000002', 'DIAMOND MILK FRESH LOW ', '946ml', 'SP-0000004', 'PT Diamond Food Indonesia Tbk ', 100, 'Pcs', '25000.0', '30000.0'),
+('B-000000003', 'Wafer', '34 Gram', 'SP-0000001', 'PT. MAYORA INDAH TBK.', 100, 'Lusin', '10000.0', '12000.0'),
+('B-000000004', 'Wafer Nissin', '64 Gram', 'SP-0000004', 'PT Diamond Food Indonesia Tbk ', 300, 'Box', '34000.0', '40800.0');
 
 -- --------------------------------------------------------
 
@@ -121,7 +125,9 @@ INSERT INTO `tb_pembelian` (`PO_No`, `Kode_Supplier`, `Nama_Supplier`, `Kode_Bar
 ('PA0100001', 'SP-0000001', 'PT. MAYORA INDAH TBK.', 'B-000000001', 'Wafer Tango', '2024-06-30', 100, '2024-06-20', 100, 100),
 ('PA0100001', 'SP-0000001', 'PT. MAYORA INDAH TBK.', 'B-000000001', 'Wafer Tango', '2024-06-30', 100, '2024-06-20', 346, 446),
 ('PA0100001', 'SP-0000001', 'PT. MAYORA INDAH TBK.', 'B-000000001', 'Wafer Tango', '2024-06-30', 100, '2024-06-20', 100, 200),
-('PA0100002', 'SP-0000004', 'PT Diamond Food Indonesia Tbk', 'B-000000002', 'DIAMOND MILK FRESH LOW', '2024-06-30', 100, '2024-06-20', 200, 290);
+('PA0100002', 'SP-0000004', 'PT Diamond Food Indonesia Tbk', 'B-000000002', 'DIAMOND MILK FRESH LOW', '2024-06-30', 100, '2024-06-20', 200, 290),
+('PA0100003', 'SP-0000001', 'PT. MAYORA INDAH TBK.', 'B-000000003', 'Wafer', '2024-06-27', 100, '2024-06-21', 200, 300),
+('PA0100004', 'SP-0000005', 'PT Mayora Indah', 'B-000000004', 'Wafer Nissin', '2024-06-30', 100, '2024-06-21', 100, 200);
 
 -- --------------------------------------------------------
 
@@ -145,7 +151,9 @@ CREATE TABLE `tb_purchase` (
 
 INSERT INTO `tb_purchase` (`PO No`, `Kode Supplier`, `Nama Supplier`, `Kode Barang`, `Nama Barang`, `Due Date Order`, `Qty Order`) VALUES
 ('PA0100001', 'SP-0000001', 'PT. MAYORA INDAH TBK.', 'B-000000001', 'Wafer Tango', '2024-06-30', 100),
-('PA0100002', 'SP-0000004', 'PT Diamond Food Indonesia Tbk ', 'B-000000002', 'DIAMOND MILK FRESH LOW ', '2024-06-30', 100);
+('PA0100002', 'SP-0000004', 'PT Diamond Food Indonesia Tbk ', 'B-000000002', 'DIAMOND MILK FRESH LOW ', '2024-06-30', 100),
+('PA0100003', 'SP-0000001', 'PT. MAYORA INDAH TBK.', 'B-000000003', 'Wafer', '2024-06-27', 100),
+('PA0100004', 'SP-0000005', 'PT Mayora Indah', 'B-000000004', 'Wafer Nissin', '2024-06-30', 100);
 
 -- --------------------------------------------------------
 
@@ -166,8 +174,7 @@ CREATE TABLE `tb_stockdaily` (
 --
 
 INSERT INTO `tb_stockdaily` (`kodeSupplier`, `NamaSupplier`, `kodeBarang`, `NamaBarang`, `QtyStock`) VALUES
-('SP-0000001', 'PT. MAYORA INDAH TBK.', 'B-000000001', 'Wafer Tango', 446),
-('SP-0000004', 'PT Diamond Food Indonesia Tbk ', 'B-000000002', 'DIAMOND MILK FRESH LOW ', 190);
+('SP-0000005', 'PT Mayora Indah', 'B-000000002', 'DIAMOND MILK FRESH LOW ', 190);
 
 -- --------------------------------------------------------
 
@@ -190,8 +197,7 @@ CREATE TABLE `tb_stockmonthly` (
 --
 
 INSERT INTO `tb_stockmonthly` (`kodeBarang`, `namaBarang`, `kodeSupplier`, `namaSupplier`, `totalStockIn`, `totalStockOut`, `stockEnd`) VALUES
-('B-000000001', 'Wafer Tango', 'SP-0000001', 'PT. MAYORA INDAH TBK.', 546, 100, 446),
-('B-000000002', 'DIAMOND MILK FRESH LOW', 'SP-0000004', 'PT Diamond Food Indonesia Tbk', 200, 10, 190);
+('B-000000004', 'Wafer Nissin', 'SP-0000005', 'PT Mayora Indah', 100, 100, 0);
 
 -- --------------------------------------------------------
 
@@ -213,8 +219,9 @@ CREATE TABLE `tb_stokout` (
 --
 
 INSERT INTO `tb_stokout` (`noinvoice`, `dueDate`, `kode_Barang`, `nama_barang`, `Qty`, `Total_Harga`) VALUES
-('8.860.770.728', '2024-06-20', 'B-000000002', 'DIAMOND MILK FRESH LOW ', 10, 300000),
-('9.406.339.897', '2024-06-20', 'B-000000001', 'Wafer Tango', 100, 120000);
+('0.476.852.860', '2024-06-21', 'B-000000004', 'Wafer Nissin', 100, 4080000),
+('6.456.507.788', '2024-06-22', 'B-000000004', 'Wafer Nissin', 100, 4080000),
+('8.860.770.728', '2024-06-20', 'B-000000002', 'DIAMOND MILK FRESH LOW ', 10, 300000);
 
 -- --------------------------------------------------------
 
@@ -236,8 +243,8 @@ CREATE TABLE `tb_suplier` (
 
 INSERT INTO `tb_suplier` (`kodeSuplier`, `namaSuplier`, `alamatSuplier`, `noTelp`, `Email`) VALUES
 ('SP-0000001', 'PT. MAYORA INDAH TBK.', 'Gedung Mayora Jl. Tomang Raya  Jakarta Barat', '+62 (21) 806 377 04', 'consumer@mayora.co.id'),
-('SP-0000003', 'PT Pencari cinta Sejati', 'Keramat Jati', '+62 838 349 3929', 'customer@gmail.com'),
-('SP-0000004', 'PT Diamond Food Indonesia Tbk ', 'Pegangsaan Dua', '086228378842', 'customer@gmail.com');
+('SP-0000004', 'PT Diamond Food Indonesia Tbk ', 'Pegangsaan Dua', '086228378842', 'customer@gmail.com'),
+('SP-0000005', 'PT Mayora Indah', 'Pegangsaan Dua', '08728382842', 'customer@gmail.com');
 
 --
 -- Indexes for dumped tables

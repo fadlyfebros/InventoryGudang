@@ -459,7 +459,7 @@ public class formPenjualan extends javax.swing.JPanel {
         jLabel2.setMinimumSize(new java.awt.Dimension(161, 29));
         jLabel2.setPreferredSize(new java.awt.Dimension(161, 29));
 
-        btnSimpan.setText("Add");
+        btnSimpan.setText("Save");
         btnSimpan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSimpanActionPerformed(evt);

@@ -1,17 +1,21 @@
 # Aplikasi Inventory Gudang
 
 User Interface Login
+.
+.
 <img align="justify" alt="Web-developer" width="50%" src="https://github.com/fadlyfebros/InventoryGudang/blob/main/Login.png">
 
 
 User Interface Menu Utama
-
-![Menu Utama](https://github.com/fadlyfebros/InventoryGudang/blob/main/menuUtama.png)
+.
+.
+<img align="justify" alt="Web-developer" width="50%" src="https://github.com/fadlyfebros/InventoryGudang/blob/main/menuUtama.png">
 
 
 User Interface Menu Laporan Barang
-
-![Menu Laporan Barang Keluar](https://github.com/fadlyfebros/InventoryGudang/blob/main/Report%20Barang.png)
+.
+.
+<img align="justify" alt="Web-developer" width="50%" src="https://github.com/fadlyfebros/InventoryGudang/blob/main/Report%20Barang.png">
 
 **Deskripsi Singkat:**
 Aplikasi Inventory Gudang adalah sebuah sistem yang dibangun menggunakan Java dan MySQL untuk mengelola inventaris di sebuah gudang. Aplikasi ini menyediakan berbagai fitur untuk memantau dan mengelola data barang, pemasok, serta laporan stok dengan efisien.

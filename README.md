@@ -2,7 +2,8 @@
 
 User Interface Login
 
-![Login](https://github.com/fadlyfebros/InventoryGudang/blob/main/Login.png)
+User Interface Login
+<img align="justify" alt="Web-developer" width="50%" src="https://github.com/fadlyfebros/InventoryGudang/blob/main/Login.png">
 
 
 User Interface Menu Utama
